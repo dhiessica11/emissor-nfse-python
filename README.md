@@ -75,3 +75,43 @@ A senha é solicitada de forma oculta e não é gravada pelo script.
 ## Privacidade
 
 Não publique XMLs autorizados, DANFSe, CNPJs reais, dados de tomadores, certificados, senhas, chaves fiscais ou bases SQLite. O `.gitignore` não elimina segredos já enviados em commits antigos.
+
+## Validação técnica em produção restrita (sem envio)
+
+Foi incluído o módulo `emissor/homologacao.py` para montar uma DPS em formato
+1.01 e realizar assinatura XMLDSIG local. A conformidade do XML deve ser
+verificada com o XSD oficial **específico da produção restrita**, que não é
+distribuído neste repositório.
+
+Baixe o pacote oficial de XSD:
+https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/producao-restrita
+
+No Mac, mantenha o certificado `.p12`, o cadastro real e o XSD em pasta
+**privada**. Prepare um arquivo JSON privado com os campos exigidos pela
+função `construir_dps` (consulte `tests/test_homologacao.py` apenas para
+estrutura; os dados de teste são fictícios). Execute:
+
+```bash
+python validar_homologacao.py \
+  --dados /caminho/privado/dps.json \
+  --xsd /caminho/privado/DPS_v1.01.xsd \
+  --certificado /caminho/privado/certificado.p12 \
+  --saida /caminho/privado/resultado-validacao
+```
+
+Substitua o nome do XSD pelo arquivo real presente no pacote oficial.
+A senha é solicitada de forma oculta no Terminal; os artefatos locais podem
+conter dados fiscais sensíveis, portanto **nunca devem ser enviados ao GitHub**.
+O diretório deve estar fora do repositório. A rotina exige que os arquivos
+de saída ainda não existam, evitando sobrescrita acidental.
+
+**Status real:** geração de XML, empacotamento e assinatura testados com
+certificado fictício em CI. A verificação de esquema com os XSD oficiais,
+a assinatura com A1 real, o handshake mTLS e o envio/retorno da API
+**ainda precisam ser executados no Mac do titular**. O script não faz POST.
+A assinatura somente com XSD válido não garante aceite fiscal.
+
+A referência para a API de testes é:
+https://sefin.producaorestrita.nfse.gov.br/API/SefinNacional/docs/index
+
+Não envie arquivos reais, certificados ou senhas a workflows públicos do GitHub.
