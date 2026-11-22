@@ -56,9 +56,7 @@ def main():
         if root.findtext(".//n:tpAmb", namespaces=ns) != "2":
             raise ValueError("Bloqueado: tpAmb deve ser 2 (produção restrita)")
         prestador_xml = root.findtext(".//n:prest/n:CNPJ", namespaces=ns)
-        cnpj_confirmado = re.sub(r"\\D", "", args.confirmar_cnpj)
-        if not re.fullmatch(r"\\d{14}", cnpj_confirmado) or cnpj_confirmado != prestador_xml:
-            raise ValueError("CNPJ informado não corresponde ao prestador da DPS")
+        validar_cnpj_confirmacao(args.confirmar_cnpj, prestador_xml)
         descricao = root.findtext(".//n:cServ/n:xDescServ", namespaces=ns) or ""
         if any(x in descricao.upper() for x in ("EXEMPLO", "FICTICIO", "FICTÍCI", "DEMONSTRATIV", "NAO TRANSMITIR", "NÃO TRANSMITIR")):
             raise ValueError("Arquivo demonstrativo bloqueado para transmissão")
