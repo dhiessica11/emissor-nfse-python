@@ -23,8 +23,8 @@ from emissor.homologacao import NAMESPACE, validar_xsd, empacotar
 
 def validar_cnpj_confirmacao(informado, prestador):
     """Confirma o CNPJ do prestador, aceitando pontuação opcional."""
-    cnpj = re.sub(r"\\D", "", informado)
-    if not re.fullmatch(r"\\d{14}", cnpj) or cnpj != prestador:
+    cnpj = "".join(char for char in informado if char.isdigit())
+    if len(cnpj) != 14 or cnpj != prestador:
         raise ValueError("CNPJ informado não corresponde ao prestador da DPS")
     return cnpj
 
