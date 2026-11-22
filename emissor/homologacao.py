@@ -74,7 +74,7 @@ def construir_dps(dados):
                           dados["serie"], int(dados["numero_dps"])))
     for name, value in (
         ("tpAmb", 2), ("dhEmi", dados["data_emissao"]),
-        ("verAplic", "EmissorPythonHomologacao_0.1"),
+        ("verAplic", "EmissorNFSePy_0.1"),
         ("serie", int(dados["serie"])), ("nDPS", int(dados["numero_dps"])),
         ("dCompet", competence.isoformat()), ("tpEmit", 1),
         ("cLocEmi", dados["municipio_emissor"]),
