@@ -1,9 +1,12 @@
 import unittest
+import json
+from pathlib import Path
 from lxml import etree
 
 from emissor.homologacao import construir_dps, NAMESPACE
 from preparar_dps_referencia import extrair_dados
-from tests.test_homologacao import dados_ficticios
+def dados_ficticios():
+    return json.loads((Path(__file__).resolve().parents[1] / 'config/dps.exemplo.json').read_text(encoding='utf-8'))
 
 
 class ConversaoTests(unittest.TestCase):
