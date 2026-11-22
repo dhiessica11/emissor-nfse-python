@@ -10,14 +10,14 @@ import json
 from pathlib import Path
 import sys
 
-DIA_COMPETENCIA = date(2026, 12, 20)
+DIA_COMPETENCIA = date(2026, 12, 1)
 
 
 def avaliar_data(data_planejada, competencia=DIA_COMPETENCIA):
     if data_planejada < competencia:
         return (
             False,
-            "BLOQUEADO: competência 20/12/2026 é posterior à emissão "
+            f"BLOQUEADO: competência {competencia:%d/%m/%Y} é posterior à emissão "
             f"planejada {data_planejada:%d/%m/%Y}; regra E0015."
         )
     return True, "Datas cronologicamente compatíveis; ainda exige validação fiscal e autorização."
@@ -41,7 +41,7 @@ def main():
             if Path(nome).name != nome:
                 raise ValueError("Nome de rascunho inválido")
             rascunho = json.loads((pasta / nome).read_text(encoding="utf-8"))
-            if (rascunho["dados_preparatorios"].get("competencia") != "2026-12-20"
+            if (rascunho["dados_preparatorios"].get("competencia") != "2026-12-01"
                     or rascunho["dados_preparatorios"].get("data_emissao") is not None):
                 raise ValueError("Rascunho com competência ou emissão inesperada")
         permitido, mensagem = avaliar_data(planejada)
