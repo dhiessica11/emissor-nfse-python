@@ -77,7 +77,7 @@ def construir_dps(dados):
         ("verAplic", "EmissorNFSePy_0.1"),
         ("serie", int(dados["serie"])), ("nDPS", int(dados["numero_dps"])),
         ("dCompet", competence.isoformat()), ("tpEmit", 1),
-        ("cLocEmi", dados["municipio_emissor"]),
+        ("finNFSe", 0), ("cLocEmi", dados["municipio_emissor"]),
     ):
         _tag(info, name, value)
     prest = etree.SubElement(info, f"{{{NAMESPACE}}}prest")
