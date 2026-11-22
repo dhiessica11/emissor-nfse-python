@@ -12,6 +12,7 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from zipfile import ZipFile, BadZipFile
 import io
+from urllib.parse import urlparse
 
 SOURCE = ("https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/"
           "producao-restrita/esquemas_prod_restrita_20261020.zip")
@@ -25,7 +26,9 @@ def baixar(url=SOURCE):
         raise ValueError("Fonte diferente da URL oficial fixada")
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 EmissorNFSe/0.1"})
     with urlopen(req, timeout=40) as response:
-        if response.geturl() != SOURCE:
+        final_url = urlparse(response.geturl())
+        if (final_url.scheme != "https" or final_url.hostname != "www.gov.br" or
+                not final_url.path.startswith("/nfse/pt-br/biblioteca/documentacao-tecnica/producao-restrita/")):
             raise ValueError("Redirecionamento para endereço não autorizado")
         data = response.read(MAX_DOWNLOAD + 1)
     if len(data) > MAX_DOWNLOAD:
