@@ -43,10 +43,12 @@ def carrega_clientes(path):
             raise ValidationError(f"Cliente {pos}: objeto inválido.")
         client_id = client.get("id")
         cnpj = re.sub(r"\D", "", str(client.get("cnpj", "")))
-        if not client_id or client_id in ids:
+        if not isinstance(client_id, str) or not client_id.strip() or client_id in ids:
             raise ValidationError(f"Cliente {pos}: ID ausente ou repetido.")
         if not cnpj_valido(cnpj) or cnpj in cnpjs:
             raise ValidationError(f"Cliente {pos}: CNPJ inválido ou repetido.")
+        if not str(client.get("unidade", "")).strip():
+            raise ValidationError(f"Cliente {pos}: identificação da unidade obrigatória.")
         if not str(client.get("razao_social", "")).strip():
             raise ValidationError(f"Cliente {pos}: razão social obrigatória.")
         if not str(client.get("descricao_servico", "")).strip():
@@ -88,6 +90,11 @@ def status(db, client_id, competence):
 
 
 def gravar_simulacoes(db, clients, competence):
+    competencia_valida(competence)
+    if not clients or len(clients) != 8:
+        raise ValidationError("A simulação exige exatamente 8 tomadores.")
+    if len({c["id"] for c in clients}) != len(clients):
+        raise ValidationError("IDs repetidos no lote.")
     now = datetime.now(timezone.utc).isoformat()
     with db:
         for client in clients:
