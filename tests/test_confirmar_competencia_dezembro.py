@@ -31,13 +31,13 @@ class ConfirmarCompetenciaTests(unittest.TestCase):
         novos = confirmar_competencia(self.docs)
         self.assertEqual(len(novos), 8)
         for novo, anterior in zip(novos, self.docs):
-            self.assertEqual(novo["dados_preparatorios"]["competencia"], "2026-12-20")
+            self.assertEqual(novo["dados_preparatorios"]["competencia"], "2026-12-01")
             self.assertIsNone(novo["dados_preparatorios"]["data_emissao"])
             self.assertIsNone(anterior["dados_preparatorios"]["competencia"])
             self.assertEqual(novo["situacao"], "COMPETENCIA_CONFIRMADA_EMISSAO_E_FISCAL_PENDENTES")
 
     def test_nao_aceita_documentos_ja_datados(self):
-        self.docs[0]["dados_preparatorios"]["competencia"] = "2026-12-20"
+        self.docs[0]["dados_preparatorios"]["competencia"] = "2026-12-01"
         with self.assertRaises(ValueError):
             confirmar_competencia(self.docs)
 
