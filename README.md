@@ -115,3 +115,17 @@ A referência para a API de testes é:
 https://sefin.producaorestrita.nfse.gov.br/API/SefinNacional/docs/index
 
 Não envie arquivos reais, certificados ou senhas a workflows públicos do GitHub.
+
+### Teste de conexão com a SEFIN Nacional (somente leitura)
+
+Para testar a autenticação mTLS com A1 no Mac, sem emissão fiscal:
+
+```bash
+python verificar_conexao_restrita.py --certificado /caminho/privado/certificado.p12 --municipio 5003702
+```
+
+O comando usa HTTPS com validação TLS, não segue redirecionamentos, não imprime
+respostas com dados fiscais e apaga os arquivos PEM temporários ao terminar.
+Um HTTP diferente de 200 requer investigação; não é prova de validade do certificado.
+
+[Relatório de homologação técnica](docs/homologacao-producao-restrita.md)
