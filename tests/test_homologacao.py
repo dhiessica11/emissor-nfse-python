@@ -57,6 +57,9 @@ class HomologacaoTests(unittest.TestCase):
         self.assertLessEqual(len(ver_aplic), 20)
         self.assertEqual(ver_aplic, "EmissorNFSePy_0.1")
         self.assertEqual(root.findtext(".//nf:finNFSe", namespaces=ns), "0")
+        cserv = root.find(".//nf:cServ", namespaces=ns)
+        cserv_names = [etree.QName(child).localname for child in cserv]
+        self.assertEqual(cserv_names, ["cTribNac", "cNBS", "xDescServ"])
         names = [etree.QName(child).localname for child in root.find(f"{{{NAMESPACE}}}infDPS")]
         self.assertLess(names.index("tpEmit"), names.index("finNFSe"))
         self.assertLess(names.index("finNFSe"), names.index("cLocEmi"))
