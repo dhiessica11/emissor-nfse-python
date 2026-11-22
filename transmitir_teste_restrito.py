@@ -35,6 +35,7 @@ def main():
     parser.add_argument("--xsd", required=True, help="XSD oficial da DPS na produção restrita")
     parser.add_argument("--certificado", required=True, help="A1 PKCS#12 privado")
     parser.add_argument("--registro", required=True, help="Novo arquivo JSON privado para controle")
+    parser.add_argument("--confirmar-cnpj", required=True, help="CNPJ do prestador, apenas para confirmação local")
     args = parser.parse_args()
     try:
         xml = Path(args.xml).read_bytes()
@@ -46,6 +47,13 @@ def main():
             raise ValueError("DPS com namespace/versão incompatíveis")
         if root.findtext(".//n:tpAmb", namespaces=ns) != "2":
             raise ValueError("Bloqueado: tpAmb deve ser 2 (produção restrita)")
+        prestador_xml = root.findtext(".//n:prest/n:CNPJ", namespaces=ns)
+        cnpj_confirmado = re.sub(r"\\D", "", args.confirmar_cnpj)
+        if not re.fullmatch(r"\\d{14}", cnpj_confirmado) or cnpj_confirmado != prestador_xml:
+            raise ValueError("CNPJ informado não corresponde ao prestador da DPS")
+        descricao = root.findtext(".//n:cServ/n:xDescServ", namespaces=ns) or ""
+        if any(x in descricao.upper() for x in ("EXEMPLO", "FICTICIO", "FICTÍCI", "DEMONSTRATIV", "NAO TRANSMITIR", "NÃO TRANSMITIR")):
+            raise ValueError("Arquivo demonstrativo bloqueado para transmissão")
         inf = root.find(f"{{{NAMESPACE}}}infDPS")
         if inf is None or not inf.get("Id"):
             raise ValueError("Identificador da DPS ausente")
@@ -69,7 +77,10 @@ def main():
         if input("Digite HOMOLOGAR UMA DPS para transmitir: ").strip() != "HOMOLOGAR UMA DPS":
             print("Cancelado sem transmissão.")
             return 1
-        registro = Path(args.registro)
+        registro = Path(args.registro).resolve()
+        repo = Path(__file__).resolve().parent
+        if registro == repo or repo in registro.parents:
+            raise ValueError("Registro deve ficar fora do repositório Git público")
         if registro.exists():
             raise ValueError("Já existe registro da DPS: não retransmitir sem consultar")
         # Controle é gravado ANTES de abrir conexão para bloquear reenvio cego.
