@@ -29,7 +29,7 @@ def id_dps(municipio, cnpj, serie, numero):
     serie = str(serie)
     if not (re.fullmatch(r"\d{7}", mun) and
             re.fullmatch(r"\d{14}", taxpayer) and
-            re.fullmatch(r"\d{1,5}", serie) and
+            re.fullmatch(r"\d{1,5}", serie) and 1 <= int(serie) <= 49999 and
             isinstance(numero, int) and 1 <= numero <= 999999999999999):
         raise ValueError("Município, CNPJ, série ou número da DPS inválidos")
     return f"DPS{mun}2{taxpayer}{int(serie):05d}{numero:015d}"
