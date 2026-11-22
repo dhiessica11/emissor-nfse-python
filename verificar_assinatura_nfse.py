@@ -24,9 +24,9 @@ def verificar_integridade(xml_bytes):
     root = etree.fromstring(xml_bytes, parser=parser)
     if root.tag != f"{{{NFSE_NS}}}NFSe":
         raise ValueError("Documento não é NFS-e nacional")
-    signatures = root.xpath(".//ds:Signature", namespaces={"ds": XMLDSIG})
+    signatures = root.xpath("./ds:Signature", namespaces={"ds": XMLDSIG})
     if len(signatures) != 1:
-        raise ValueError("É exigida exatamente uma assinatura XMLDSig")
+        raise ValueError("É exigida exatamente uma assinatura XMLDSig direta da NFS-e")
     signature = signatures[0]
     certs = signature.xpath("./ds:KeyInfo/ds:X509Data/ds:X509Certificate/text()",
                            namespaces={"ds": XMLDSIG})
@@ -37,7 +37,7 @@ def verificar_integridade(xml_bytes):
     # does NOT establish trust in the signer or validate the ICP-Brasil chain.
     XMLVerifier().verify(
         root, x509_cert=cert.public_bytes(Encoding.PEM),
-        expect_config=SignatureConfiguration(require_x509=True),
+        expect_config=SignatureConfiguration(require_x509=True, location="./"),
         id_attribute="Id",
     )
     return True
