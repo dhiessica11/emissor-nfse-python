@@ -1,0 +1,154 @@
+[
+  {
+    "id": "cliente_01",
+    "unidade": "Cliente 01 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 01 LTDA",
+    "cnpj": "00000001000136",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  },
+  {
+    "id": "cliente_02",
+    "unidade": "Cliente 02 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 02 LTDA",
+    "cnpj": "00000002000180",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  },
+  {
+    "id": "cliente_03",
+    "unidade": "Cliente 03 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 03 LTDA",
+    "cnpj": "00000003000125",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  },
+  {
+    "id": "cliente_04",
+    "unidade": "Cliente 04 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 04 LTDA",
+    "cnpj": "00000004000170",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  },
+  {
+    "id": "cliente_05",
+    "unidade": "Cliente 05 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 05 LTDA",
+    "cnpj": "00000005000114",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  },
+  {
+    "id": "cliente_06",
+    "unidade": "Cliente 06 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 06 LTDA",
+    "cnpj": "00000006000169",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  },
+  {
+    "id": "cliente_07",
+    "unidade": "Cliente 07 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 07 LTDA",
+    "cnpj": "00000007000103",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  },
+  {
+    "id": "cliente_08",
+    "unidade": "Cliente 08 (EXEMPLO FICTICIO)",
+    "razao_social": "EMPRESA EXEMPLO 08 LTDA",
+    "cnpj": "00000008000158",
+    "municipio_tomador": "Municipio ficticio",
+    "uf_tomador": "XX",
+    "codigo_ibge_tomador": "PREENCHER",
+    "cep_tomador": "PREENCHER",
+    "valor": "100.00",
+    "descricao_servico": "SERVICO DEMONSTRATIVO - SUBSTITUIR LOCALMENTE",
+    "campos_fiscais": {
+      "codigo_tributacao_nacional": "PREENCHER",
+      "codigo_nbs": "PREENCHER",
+      "municipio_prestacao_ibge": "PREENCHER",
+      "iss_retido": false,
+      "regime_referencia": "VALIDAR COM CONTABILIDADE"
+    }
+  }
+]
