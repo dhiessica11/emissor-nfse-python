@@ -8,6 +8,7 @@ import argparse
 import getpass
 import json
 import os
+import re
 from pathlib import Path
 import sys
 from datetime import datetime, timezone
@@ -49,6 +50,8 @@ def main():
         if inf is None or not inf.get("Id"):
             raise ValueError("Identificador da DPS ausente")
         dps_id = inf.get("Id")
+        if not re.fullmatch(r"DPS[0-9]{42}", dps_id):
+            raise ValueError("Formato do identificador de DPS inválido")
         password = getpass.getpass("Senha do A1 local (não gravada): ")
         _key, cert, _chain = pkcs12.load_key_and_certificates(
             Path(args.certificado).read_bytes(), password.encode("utf-8")
@@ -57,7 +60,7 @@ def main():
             raise ValueError("Certificado inválido")
         XMLVerifier().verify(
             xml, x509_cert=cert.public_bytes(Encoding.PEM),
-            id_attribute="Id", expect_config=None,
+            id_attribute="Id",
         )
         print("Assinatura e XSD validados localmente.")
         print("Ambiente fixo: PRODUÇÃO RESTRITA, sem efeitos fiscais.")
