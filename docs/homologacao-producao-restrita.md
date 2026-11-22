@@ -78,3 +78,25 @@ sem conferência da legislação, ou com arquivos compartilhados publicamente.
 Uma tentativa cria um registro privativo `PENDENTE_CONSULTA` mesmo em falha de
 rede. Não excluir nem ignorar esse registro para tentar novamente: conferir
 manualmente no ambiente restrito, evitando duplicação.
+
+## Atualização técnica de 22/11/2026
+
+- HTTP 200 confirmado em consulta ADN de parametrização municipal no Mac,
+  usando arquivo A1 local; o endpoint por si só não prova autenticação exigida
+  pela API SEFIN de emissão.
+- Disponibilizado `baixar_esquemas_restritos.py` para o pacote oficial
+  `esquemas_prod_restrita_20261020.zip`. **Download e validação do XSD
+  oficial ainda dependem de execução no Mac**.
+- Disponibilizado `preparar_dps_referencia.py`, que extrai os campos da DPS
+  de um XML autorizado e prepara **outro** documento com nova competência,
+  série, número e vencimento, sempre em arquivo privado, sem transmitir.
+- A série **70000** das notas originadas no Portal Web não serve para
+  emissão via API. O gerador e o envio experimental bloqueiam séries fora
+  de **1–49999**.
+- Adicionadas validações de pasta privada, CNPJ de confirmação e bloqueio
+  de conteúdo demonstrativo na rotina de envio em produção restrita.
+- CI validou 19 testes em cada uma das três versões Python 3.11, 3.12 e
+  3.13, na execução:
+  https://github.com/dhiessica11/emissor-nfse-python/actions/runs/45034376435
+- A assinatura com certificado fictício foi testada, mas **não** há evidência
+  de autorização de DPS real em produção restrita ou produção.
