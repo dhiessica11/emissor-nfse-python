@@ -25,7 +25,7 @@ def dados_ficticios():
         "bairro_tomador": "CENTRO", "municipio_prestacao": "5003702",
         "codigo_servico": "010701", "codigo_nbs": "115011000",
         "descricao_servico": "PRESTACAO DE SERVICO - EXEMPLO",
-        "valor": "100.00", "serie": "70000", "numero_dps": 900001,
+        "valor": "100.00", "serie": "1", "numero_dps": 900001,
         "competencia": "2026-11-22", "data_emissao": "2026-11-22T12:00:00-04:00",
         "op_simp_nac": "3", "reg_ap_trib_sn": "2", "reg_esp_trib": "0",
         "trib_issqn": "1", "ret_issqn": "1",
@@ -42,7 +42,9 @@ class HomologacaoTests(unittest.TestCase):
         self.assertEqual(len(identifier), 45)
         self.assertTrue(identifier.startswith("DPS50037022"))
         with self.assertRaises(ValueError):
-            id_dps("invalid", d["prestador_cnpj"], "70000", 1)
+            id_dps("invalid", d["prestador_cnpj"], "1", 1)
+        with self.assertRaises(ValueError):
+            id_dps(d["municipio_emissor"], d["prestador_cnpj"], "70000", 1)
 
     def test_gera_xml_e_pacote(self):
         document = construir_dps(dados_ficticios())
