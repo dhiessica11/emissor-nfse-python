@@ -54,6 +54,7 @@ def extrair_dados(xml, serie, numero, competencia, vencimento):
         "logradouro_tomador": get("n:toma/n:end/n:xLgr"),
         "numero_endereco_tomador": get("n:toma/n:end/n:nro"),
         "bairro_tomador": get("n:toma/n:end/n:xBairro"),
+        "complemento_endereco_tomador": inf.findtext("n:toma/n:end/n:xCpl", namespaces=NS) or "",
         "municipio_prestacao": get("n:serv/n:locPrest/n:cLocPrestacao"),
         "codigo_servico": get("n:serv/n:cServ/n:cTribNac"),
         "codigo_nbs": get("n:serv/n:cServ/n:cNBS"),
