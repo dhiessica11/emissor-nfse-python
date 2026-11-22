@@ -93,6 +93,10 @@ class HomologacaoTests(unittest.TestCase):
         signed = assinar_dps(original, p12, "senha-ficticia")
         XMLVerifier().verify(signed, x509_cert=certificate.public_bytes(serialization.Encoding.PEM), id_attribute="Id")
         self.assertIn(b"Signature", signed)
+        self.assertNotIn(b"<ds:", signed)
+        self.assertNotIn(b"xmlns:ds=", signed)
+        self.assertNotIn(b"<ns0:", signed)
+        self.assertIn(b'<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"', signed)
 
 
 if __name__ == "__main__":
