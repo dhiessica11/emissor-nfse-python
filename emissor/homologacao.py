@@ -145,7 +145,9 @@ def assinar_dps(xml, p12_bytes, senha):
     # O signxml recebe o documento e ancora a assinatura no Id do infDPS.
     signer = XMLSigner(method=methods.enveloped, signature_algorithm="rsa-sha256",
                        digest_algorithm="sha256", c14n_algorithm="http://www.w3.org/2001/10/xml-exc-c14n#")
-    # A SEFIN rejeita prefixos (E1228), inclusive na assinatura XMLDSig.\n    signer.namespaces = {None: "http://www.w3.org/2000/09/xmldsig#"}\n    signed = signer.sign(
+    # A SEFIN rejeita prefixos (E1228), inclusive na assinatura XMLDSig.
+    signer.namespaces = {None: "http://www.w3.org/2000/09/xmldsig#"}
+    signed = signer.sign(
         doc, key=key.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()),
         cert=cert.public_bytes(Encoding.PEM), reference_uri=f'#{inf.get("Id")}',
         id_attribute="Id",
