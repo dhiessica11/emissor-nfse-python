@@ -53,6 +53,9 @@ class HomologacaoTests(unittest.TestCase):
         ns = {"nf": NAMESPACE}
         self.assertEqual(root.findtext(".//nf:vServ", namespaces=ns), "100.00")
         self.assertEqual(root.findtext(".//nf:tpAmb", namespaces=ns), "2")
+        ver_aplic = root.findtext(".//nf:verAplic", namespaces=ns)
+        self.assertLessEqual(len(ver_aplic), 20)
+        self.assertEqual(ver_aplic, "EmissorNFSePy_0.1")
         packed = empacotar(document)
         self.assertEqual(gzip.decompress(base64.b64decode(packed["dpsXmlGZipB64"])), document)
 
