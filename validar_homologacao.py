@@ -34,7 +34,10 @@ def main():
         )
         XMLVerifier().verify(assinado, x509_cert=cert.public_bytes(Encoding.PEM), id_attribute='Id')
         payload = empacotar(assinado)
-        target = Path(args.saida)
+        target = Path(args.saida).resolve()
+        repo = Path(__file__).resolve().parent
+        if target == repo or repo in target.parents:
+            raise ValueError("Saída com dados fiscais deve ficar fora do repositório Git público")
         target.mkdir(mode=0o700, parents=True, exist_ok=True)
         if target.is_symlink():
             raise ValueError("Diretório de saída não pode ser link simbólico.")
