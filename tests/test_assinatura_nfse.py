@@ -24,6 +24,8 @@ class VerificarAssinaturaTests(unittest.TestCase):
                 .not_valid_before(now - timedelta(days=1))
                 .not_valid_after(now + timedelta(days=1))
                 .sign(key, __import__("cryptography").hazmat.primitives.hashes.SHA256()))
+        cls.key = key
+        cls.cert = cert
         root = etree.Element(f"{{{NS}}}NFSe", nsmap={None: NS})
         inf = etree.SubElement(root, f"{{{NS}}}infNFSe")
         inf.set("Id", "NFSeTESTE123")
@@ -36,6 +38,18 @@ class VerificarAssinaturaTests(unittest.TestCase):
 
     def test_assinatura_integra(self):
         self.assertTrue(verificar_integridade(self.signed))
+
+    def test_assinatura_interna_da_dps_nao_confunde_assinatura_nfse(self):
+        root = etree.Element(f"{{{NS}}}NFSe", nsmap={None: NS})
+        inf = etree.SubElement(root, f"{{{NS}}}infNFSe", Id="NFSeCOMDPS")
+        dps = etree.SubElement(inf, f"{{{NS}}}DPS")
+        etree.SubElement(dps, "{http://www.w3.org/2000/09/xmldsig#}Signature")
+        signed = etree.tostring(XMLSigner(method=methods.enveloped).sign(
+            root,
+            key=self.key.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()),
+            cert=self.cert.public_bytes(Encoding.PEM),
+            reference_uri="#NFSeCOMDPS", id_attribute="Id"))
+        self.assertTrue(verificar_integridade(signed))
 
     def test_conteudo_alterado(self):
         altered = self.signed.replace(b"<nNFSe>1</nNFSe>", b"<nNFSe>2</nNFSe>")
