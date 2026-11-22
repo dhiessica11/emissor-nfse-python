@@ -56,6 +56,10 @@ class HomologacaoTests(unittest.TestCase):
         ver_aplic = root.findtext(".//nf:verAplic", namespaces=ns)
         self.assertLessEqual(len(ver_aplic), 20)
         self.assertEqual(ver_aplic, "EmissorNFSePy_0.1")
+        self.assertEqual(root.findtext(".//nf:finNFSe", namespaces=ns), "0")
+        names = [etree.QName(child).localname for child in root.find(f"{{{NAMESPACE}}}infDPS")]
+        self.assertLess(names.index("tpEmit"), names.index("finNFSe"))
+        self.assertLess(names.index("finNFSe"), names.index("cLocEmi"))
         packed = empacotar(document)
         self.assertEqual(gzip.decompress(base64.b64decode(packed["dpsXmlGZipB64"])), document)
 
