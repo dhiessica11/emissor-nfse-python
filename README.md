@@ -129,3 +129,45 @@ respostas com dados fiscais e apaga os arquivos PEM temporários ao terminar.
 Um HTTP diferente de 200 requer investigação; não é prova de validade do certificado.
 
 [Relatório de homologação técnica](docs/homologacao-producao-restrita.md)
+
+## Fluxo completo de homologação local (Mac)
+
+**Nunca coloque dados reais no GitHub.** Trabalhe com arquivos privados fora do repositório.
+
+1. Baixe os esquemas oficiais da produção restrita:
+
+```bash
+python baixar_esquemas_restritos.py --destino "$HOME/Documents/NFSe-Privado/xsd-20261020"
+find "$HOME/Documents/NFSe-Privado/xsd-20261020" -iname '*DPS*.xsd'
+```
+
+2. Se possuir localmente o XML autorizado de uma nota anterior, prepare o JSON
+de uma **nova** DPS de homologação, conferindo série e número ainda não usados:
+
+```bash
+python preparar_dps_referencia.py \
+  --xml-referencia "$HOME/Documents/NFSe-Privado/nota-referencia.xml" \
+  --serie 1 --numero-dps 1 \
+  --competencia 2026-11-22 --vencimento 01/12/2026 \
+  --saida "$HOME/Documents/NFSe-Privado/nova-dps.json"
+```
+
+O exemplo da série 1 e número 1 **não confirma que estão disponíveis**;
+antes do envio, confira se já foram utilizados no mesmo ambiente. A faixa
+**00001–49999** é reservada ao aplicativo próprio/API; a série **70000**
+das notas históricas corresponde ao Emissor Web e não deve ser reutilizada.
+
+3. Revise manualmente os campos fiscais do JSON com a documentação atual
+e execute `validar_homologacao.py`, passando o XSD principal da DPS extraído
+do pacote oficial, e o certificado `.p12` privado.
+4. Só após resultado válido, execute `transmitir_teste_restrito.py` com
+`--confirmar-cnpj`, XML assinado, XSD, A1 e registro privado. O programa
+só envia a **produção restrita**, exige confirmação e bloqueia retries.
+
+O pacote de produção restrita em 22/11/2026 é o identificado no portal
+oficial como `esquemas_prod_restrita_20261020.zip`. A inclusão de
+campos IBS/CBS e suas regras depende do XSD e das orientações vigentes.
+[Orientações detalhadas](docs/homologacao-producao-restrita.md).
+
+O pacote XSD não foi executado contra os dados reais neste ambiente;
+qualquer inconsistência retornada no Mac deverá ser corrigida antes do POST.
