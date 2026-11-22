@@ -54,6 +54,9 @@ def main():
         descricao = root.findtext(".//n:cServ/n:xDescServ", namespaces=ns) or ""
         if any(x in descricao.upper() for x in ("EXEMPLO", "FICTICIO", "FICTÍCI", "DEMONSTRATIV", "NAO TRANSMITIR", "NÃO TRANSMITIR")):
             raise ValueError("Arquivo demonstrativo bloqueado para transmissão")
+        serie = root.findtext(".//n:serie", namespaces=ns)
+        if not serie or not serie.isdigit() or not 1 <= int(serie) <= 49999:
+            raise ValueError("Série fora da faixa permitida para emissão via API (1 a 49999)")
         inf = root.find(f"{{{NAMESPACE}}}infDPS")
         if inf is None or not inf.get("Id"):
             raise ValueError("Identificador da DPS ausente")
