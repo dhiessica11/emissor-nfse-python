@@ -171,3 +171,29 @@ campos IBS/CBS e suas regras depende do XSD e das orientações vigentes.
 
 O pacote XSD não foi executado contra os dados reais neste ambiente;
 qualquer inconsistência retornada no Mac deverá ser corrigida antes do POST.
+
+## Um comando: pré-homologação local completa
+
+Depois de instalar dependências e salvar o XML autorizado de referência
+em pasta privada, execute:
+
+```bash
+python homologar_localmente.py \
+  --xml-referencia "/caminho/privado/nota-referencia.xml" \
+  --certificado "/caminho/privado/certificado.p12" \
+  --serie 1 --numero-dps 1 \
+  --competencia 2026-11-22 --vencimento 01/12/2026 \
+  --pasta-privada "$HOME/.local/share/nfse/teste-001"
+```
+
+O comando baixa o pacote XSD oficial de produção restrita, extrai os dados
+da DPS anterior, prepara **um novo documento de teste**, assina com o A1 local,
+valida XMLDSIG e tenta validar o XSD. Não faz transmissão à SEFIN.
+Escolha um número de DPS ainda não usado, e reveja os dados da nota anterior
+antes de testar. Uma reprovação pelo XSD deve ser corrigida no código; **não
+ignore o erro nem use o emissor real até resolver**.
+
+Depois do resultado positivo, a emissão no ambiente restrito deve ser
+efetuada separadamente com confirmação explícita, usando
+`transmitir_teste_restrito.py` e seu parâmetro `--confirmar-cnpj`.
+O ambiente real não é acessível por esse script.
