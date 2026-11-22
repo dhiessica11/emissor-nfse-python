@@ -102,9 +102,10 @@ def construir_dps(dados):
     location = etree.SubElement(serv, f"{{{NAMESPACE}}}locPrest")
     _tag(location, "cLocPrestacao", dados["municipio_prestacao"])
     cserv = etree.SubElement(serv, f"{{{NAMESPACE}}}cServ")
+    # A producao restrita NT009 (20/10/2026) exige cNBS antes de xDescServ.
     for tag, field in (("cTribNac", "codigo_servico"),
-                       ("xDescServ", "descricao_servico"),
-                       ("cNBS", "codigo_nbs")):
+                       ("cNBS", "codigo_nbs"),
+                       ("xDescServ", "descricao_servico")):
         _tag(cserv, tag, dados[field])
     values = etree.SubElement(info, f"{{{NAMESPACE}}}valores")
     vp = etree.SubElement(values, f"{{{NAMESPACE}}}vServPrest")
