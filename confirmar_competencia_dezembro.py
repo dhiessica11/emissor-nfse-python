@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Confirma a competência 20/12/2026 em oito rascunhos privados.
+"""Confirma a competência 01/12/2026 em oito rascunhos privados.
 
 Não gera XML, não define data de emissão, não assina nem transmite.
 Preserva os originais e cria um novo diretório exclusivo.
@@ -11,7 +11,7 @@ import sys
 
 from preparar_rascunhos_dps_dezembro import salvar_diretorio_novo
 
-COMPETENCIA = "2026-12-20"
+COMPETENCIA = "2026-12-01"
 MES = "2026-12"
 VENCIMENTO = "2026-12-20"
 
@@ -79,7 +79,7 @@ def main():
             documentos.append(doc)
         novos = confirmar_competencia(documentos)
         destino = salvar_diretorio_novo(args.saida_dir, novos)
-        print("COMPETÊNCIA CONFIRMADA: 20/12/2026 | 8 RASCUNHOS | R$ 4.000,00")
+        print("COMPETÊNCIA CONFIRMADA: 01/12/2026 | 8 RASCUNHOS | R$ 4.000,00")
         print("Saída privada:", destino)
         print("Data de emissão: PENDENTE; análise fiscal: PENDENTE")
         print("Nenhum XML, assinatura ou transmissão realizados")
