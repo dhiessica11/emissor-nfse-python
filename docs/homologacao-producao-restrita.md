@@ -19,8 +19,8 @@ Integração com a API SEFIN Nacional para NFS-e recorrentes. O repositório é
 3. Preparar arquivo JSON **privado** com os campos reais revisados; dados pessoais e empresariais não devem aparecer em repositório ou ações do GitHub.
 4. Executar a assinatura usando A1 válido no Mac, conferindo CNPJ, validade e autorização.
 5. Executar consulta mTLS somente leitura: `verificar_conexao_restrita.py`.
-6. Apenas após essas validações: implementar e homologar POST /nfse, consulta GET /dps/{id}, tratamento de rejeições, falhas e reconciliação, sem retry cego.
-7. Homologar IBS/CBS segundo a documentação vigente e as características tributárias do prestador.
+6. O envio experimental de uma DPS para POST /nfse foi implementado em `transmitir_teste_restrito.py`, com consulta prévia GET /dps/{id}, confirmação manual e registro de tentativa. **Sua execução com o A1 real e o aceite pela API permanecem pendentes.**
+7. Homologar IBS/CBS segundo a documentação vigente e as características tributárias do prestador.\n8. Para o lote de oito notas, implementar e validar emissão individual, tratamento de rejeições e reconciliação antes de ativar o botão de lote.
 
 ## Comandos locais
 
@@ -58,3 +58,23 @@ com dados reais em pasta privada: jamais envie esse arquivo ao GitHub.
 - https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/producao-restrita
 - https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/apis-prod-restrita-e-producao
 - https://www.gov.br/nfse/pt-br/biblioteca/documentacao-tecnica/documentacao-atual
+
+## Envio de UMA DPS em produção restrita (opcional, somente após XSD e assinatura)
+
+```bash
+python transmitir_teste_restrito.py \
+  --xml /caminho/privado/resultado/dps-assinada.xml \
+  --xsd /caminho/privado/arquivo-DPS-oficial.xsd \
+  --certificado /caminho/privado/certificado.p12 \
+  --registro /caminho/privado/registro-competencia-cliente.json
+```
+
+O programa solicita a senha do A1 e exige digitar
+`HOMOLOGAR UMA DPS` antes do POST. É obrigatório escolher um identificador
+de DPS novo e confirmar dados fiscais válidos do prestador e tomador.
+
+**Nunca executar** esse teste usando uma nota antiga, duplicando número/série,
+sem conferência da legislação, ou com arquivos compartilhados publicamente.
+Uma tentativa cria um registro privativo `PENDENTE_CONSULTA` mesmo em falha de
+rede. Não excluir nem ignorar esse registro para tentar novamente: conferir
+manualmente no ambiente restrito, evitando duplicação.
