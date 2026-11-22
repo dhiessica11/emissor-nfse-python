@@ -21,6 +21,14 @@ from emissor.cliente_sefin import enviar_request, sessao_certificado
 from emissor.homologacao import NAMESPACE, validar_xsd, empacotar
 
 
+def validar_cnpj_confirmacao(informado, prestador):
+    """Confirma o CNPJ do prestador, aceitando pontuação opcional."""
+    cnpj = re.sub(r"\\D", "", informado)
+    if not re.fullmatch(r"\\d{14}", cnpj) or cnpj != prestador:
+        raise ValueError("CNPJ informado não corresponde ao prestador da DPS")
+    return cnpj
+
+
 def gravar_exclusivo(path, dados):
     path = Path(path)
     path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
