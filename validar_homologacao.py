@@ -23,10 +23,16 @@ def main():
     try:
         doc = json.loads(Path(args.dados).read_text(encoding="utf-8"))
         xml = construir_dps(doc)
-        validar_xsd(xml, args.xsd)
+        # O XSD pode exigir Signature; validamos o documento completo assinado.
         senha = getpass.getpass("Senha do certificado A1 (não será gravada): ")
         assinado = assinar_dps(xml, Path(args.certificado).read_bytes(), senha)
         validar_xsd(assinado, args.xsd)
+        from cryptography.hazmat.primitives.serialization import Encoding, pkcs12
+        from signxml import XMLVerifier
+        _, cert, _ = pkcs12.load_key_and_certificates(
+            Path(args.certificado).read_bytes(), senha.encode('utf-8')
+        )
+        XMLVerifier().verify(assinado, x509_cert=cert.public_bytes(Encoding.PEM), id_attribute='Id')
         payload = empacotar(assinado)
         target = Path(args.saida)
         target.mkdir(mode=0o700, parents=True, exist_ok=True)
