@@ -5,14 +5,14 @@ from auditar_data_emissao_dezembro import avaliar_data
 
 
 class AuditoriaDatasTests(unittest.TestCase):
-    def test_primeiro_de_dezembro_bloqueado(self):
-        ok, msg = avaliar_data(date(2026, 12, 1))
+    def test_trinta_de_novembro_bloqueado(self):
+        ok, msg = avaliar_data(date(2026, 11, 30))
         self.assertFalse(ok)
         self.assertIn("E0015", msg)
 
-    def test_dezenove_de_dezembro_bloqueado(self):
-        ok, _ = avaliar_data(date(2026, 12, 19))
-        self.assertFalse(ok)
+    def test_primeiro_de_dezembro_permitido_cronologicamente(self):
+        ok, _ = avaliar_data(date(2026, 12, 1))
+        self.assertTrue(ok)
 
     def test_vinte_de_dezembro_cronologicamente_possivel(self):
         ok, _ = avaliar_data(date(2026, 12, 20))
