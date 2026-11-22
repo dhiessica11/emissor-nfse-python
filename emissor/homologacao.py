@@ -93,10 +93,11 @@ def construir_dps(dados):
     nacional = etree.SubElement(endereco, f"{{{NAMESPACE}}}endNac")
     _tag(nacional, "cMun", dados["municipio_tomador"])
     _tag(nacional, "CEP", dados["cep_tomador"])
-    for tag, field in (("xLgr", "logradouro_tomador"),
-                       ("nro", "numero_endereco_tomador"),
-                       ("xBairro", "bairro_tomador")):
-        _tag(endereco, tag, dados[field])
+    _tag(endereco, "xLgr", dados["logradouro_tomador"])
+    _tag(endereco, "nro", dados["numero_endereco_tomador"])
+    if dados.get("complemento_endereco_tomador"):
+        _tag(endereco, "xCpl", dados["complemento_endereco_tomador"])
+    _tag(endereco, "xBairro", dados["bairro_tomador"])
     serv = etree.SubElement(info, f"{{{NAMESPACE}}}serv")
     location = etree.SubElement(serv, f"{{{NAMESPACE}}}locPrest")
     _tag(location, "cLocPrestacao", dados["municipio_prestacao"])
