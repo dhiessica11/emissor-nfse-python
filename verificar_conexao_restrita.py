@@ -14,7 +14,7 @@ from cryptography.hazmat.primitives.serialization import (
     Encoding, PrivateFormat, NoEncryption, pkcs12,
 )
 
-BASE = "https://sefin.producaorestrita.nfse.gov.br/SefinNacional"
+BASE = "https://adn.producaorestrita.nfse.gov.br/parametrizacao"
 
 
 def main():
@@ -42,19 +42,20 @@ def main():
                 fd = os.open(file, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
                 with os.fdopen(fd, "wb") as dest:
                     dest.write(blob)
-            endpoint = f"{BASE}/parametros_municipais/{args.municipio}/convenio"
+            endpoint = f"{BASE}/{args.municipio}/convenio"
             with requests.Session() as sess:
                 response = sess.get(
                     endpoint, cert=(str(certificate_file), str(key_file)),
                     timeout=(10, 30), verify=True, allow_redirects=False,
                     headers={"Accept": "application/json"},
                 )
-            print("Endpoint: produção restrita (consulta somente leitura)")
+            print("Endpoint: ADN / parametrização municipal / produção restrita (consulta somente leitura)")
             print("Status HTTP:", response.status_code)
             if response.status_code == 200:
-                print("Consulta recebida pelo servidor.")
+                print("Consulta ao endpoint ADN recebida com sucesso.")
+                print("A resposta HTTP 200, isoladamente, não comprova exigência ou validação de mTLS pelo endpoint.")
             else:
-                print("Resposta não confirmada como sucesso. Verifique autorização, certificado e parâmetros.")
+                print("Consulta não concluída. Confira rota, acesso, autorização e parâmetros municipais.")
                 print("Não serão exibidos dados fiscais nem credenciais.")
             return 0 if response.status_code == 200 else 1
     except (ValueError, OSError, requests.RequestException) as exc:
