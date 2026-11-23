@@ -158,7 +158,7 @@ def painel_html(clientes, lotes, token, mensagem="", erro=False):
                 'na pasta config do projeto ou no SSD KINGSTON 1.</p>')
     else:
         form = (
-            '<form method="post" action="/criar"><input type="hidden" name="token" value="' + h(token) + '">'
+            '<form method="post" action="/criar" translate="no"><input type="hidden" name="token" value="' + h(token) + '">'
             '<div class="duo"><label>Competência<input type="date" name="competencia" value="2026-12-01" required></label>'
             '<label>Vencimento<input type="date" name="vencimento" value="2026-12-20" required></label></div>'
             '<label>Descrição do serviço<textarea name="descricao" rows="4" maxlength="1500" required>' +
@@ -167,7 +167,7 @@ def painel_html(clientes, lotes, token, mensagem="", erro=False):
             '<tbody>' + "".join(itens) + '</tbody></table></div>'
             '<button type="submit">Salvar prévia privada do lote</button></form>'
         )
-    return ("""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+    return ("""<!doctype html><html lang="pt-BR" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Central de Emissão NFS-e — preparação</title>
 <style>
@@ -246,8 +246,17 @@ def criar_handler(token, cadastro_path, base):
             self._pagina()
 
         def do_POST(self):
-            if not self._validar_host() or not self._validar_origem():
-                self.send_error(403)
+            if not self._validar_host():
+                self._responder(
+                    "<h2>Endereço local não reconhecido</h2>"
+                    "<p>Reabra o painel pelo atalho da Mesa do Mac.</p>", 403)
+                return
+            if not self._validar_origem():
+                self._responder(
+                    "<h2>Origem do formulário não reconhecida</h2>"
+                    "<p>Feche esta aba e abra novamente pelo atalho da Mesa. "
+                    "Desative a tradução automática nesta página local. "
+                    "Nenhuma prévia foi salva por esta tentativa.</p>", 403)
                 return
             if self.path != "/criar":
                 self.send_error(404)
@@ -264,7 +273,12 @@ def criar_handler(token, cadastro_path, base):
                     return
                 valores = {k: v[0] for k, v in dados.items()}
                 if not secrets.compare_digest(valores.get("token", ""), token):
-                    self.send_error(403)
+                    self._responder(
+                        "<h2>Formulário expirado ou alterado</h2>"
+                        "<p>Atualize a página (Command + R) antes de tentar novamente. "
+                        "Se persistir, reabra o painel pelo atalho. "
+                        "Não use formulários de abas antigas ou traduzidas. "
+                        "Nenhuma prévia foi salva por esta tentativa.</p>", 403)
                     return
                 if cadastro_path is None:
                     raise ValueError("Cadastro não localizado")
