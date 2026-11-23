@@ -251,13 +251,11 @@ def criar_handler(token, cadastro_path, base):
                     "<h2>Endereço local não reconhecido</h2>"
                     "<p>Reabra o painel pelo atalho da Mesa do Mac.</p>", 403)
                 return
-            if not self._validar_origem():
-                self._responder(
-                    "<h2>Origem do formulário não reconhecida</h2>"
-                    "<p>Feche esta aba e abra novamente pelo atalho da Mesa. "
-                    "Desative a tradução automática nesta página local. "
-                    "Nenhuma prévia foi salva por esta tentativa.</p>", 403)
-                return
+            # Origin pode ser alterado por tradutores/extensões no Chrome.
+            # A autorização é feita pelo token aleatório de 256 bits presente
+            # somente no HTML fornecido via loopback, além da validação Host.
+            # Nenhum cookie, credencial ou sessão ambiente é usado.
+            # Não recusar apenas por divergência de Origin.
             if self.path != "/criar":
                 self.send_error(404)
                 return
