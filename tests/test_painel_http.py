@@ -60,14 +60,26 @@ class FormularioHTTPTests(unittest.TestCase):
         self.assertIn("Formulário expirado", ctx.exception.read().decode())
         self.assertFalse((self.base / "lotes-painel").exists())
 
-    def test_post_cross_origin_rejeitado(self):
-        req = Request(self.root + "/criar", data=b"token=token-de-teste",
+    def test_origem_modificada_sem_token_e_bloqueada(self):
+        # Um site externo não consegue ler o token do HTML local.
+        req = Request(self.root + "/criar", data=b"token=desconhecido",
                       headers={"Origin": "https://outro-site.example"}, method="POST")
         with self.assertRaises(HTTPError) as ctx:
             urlopen(req)
         self.assertEqual(ctx.exception.code, 403)
-        self.assertIn("Origem do formulário", ctx.exception.read().decode())
+        self.assertIn("Formulário expirado", ctx.exception.read().decode())
         self.assertFalse((self.base / "lotes-painel").exists())
+
+    def test_origem_alterada_com_token_valido_pode_salvar(self):
+        # Reproduz navegador/extensão alterando Origin ao submeter formulario.
+        params = {"token": self.token, "competencia": "2026-12-01",
+                  "vencimento": "2026-12-20", "descricao": "Serviço de teste do painel"}
+        params.update({f"valor_{i}": "500.00" for i in range(8)})
+        req = Request(self.root + "/criar", data=urlencode(params).encode(),
+                      headers={"Origin": "null"}, method="POST")
+        with urlopen(req) as resposta:
+            self.assertEqual(resposta.status, 200)
+            self.assertIn("Prévia privada salva", resposta.read().decode())
 
 
 if __name__ == "__main__":
